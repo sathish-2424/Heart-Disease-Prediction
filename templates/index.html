@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Heart Disease Prediction</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f4f7fa;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            background: #fff;
+            margin-top: 48px;
+            padding: 36px 38px 24px 38px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(44, 62, 80, 0.10);
+            max-width: 410px;
+            width: 90%;
+            transition: box-shadow 0.2s;
+        }
+        h2 {
+            color: #253858;
+            margin-top: 0;
+            margin-bottom: 26px;
+            text-align: center;
+        }
+        form {
+            margin-bottom: 12px;
+        }
+        .formrow {
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            color: #48516a;
+            margin-bottom: 5px;
+            font-weight: 500;
+            font-size: 16px;
+        }
+        input[type="number"], select {
+            padding: 9px 10px;
+            border: 1px solid #d2dae6;
+            border-radius: 6px;
+            background: #f8fafb;
+            font-size: 15px;
+            transition: border 0.2s;
+            outline: none;
+        }
+        input[type="number"]:focus, select:focus {
+            border-color: #5674e5;
+            background: #fff;
+        }
+        button {
+            margin-top: 8px;
+            width: 100%;
+            padding: 11px 0;
+            font-size: 17px;
+            background-color: #5674e5;
+            color: #fff;
+            border: none;
+            border-radius: 7px;
+            font-weight: 600;
+            box-shadow: 0 1px 3px rgba(44, 62, 80, 0.05);
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: background 0.18s;
+        }
+        button:hover {
+            background-color: #425ec6;
+        }
+        #result {
+            margin-top: 18px;
+            font-size: 1.11em;
+            min-height: 24px;
+            text-align: center;
+        }
+        @media (max-width: 500px) {
+            .container { padding: 18px 4vw 12px 4vw; }
+            h2 { font-size: 1.22em; }
+            label, input, select, button { font-size: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🫀 Heart Disease Prediction</h2>
+        <form id="predictForm" autocomplete="off">
+            <div class="formrow"><label for="Age">Age</label>
+                <input type="number" id="Age" min="1" max="120" required>
+            </div>
+            <div class="formrow"><label for="Sex">Sex</label>
+                <select id="Sex">
+                    <option value="1">Male</option>
+                    <option value="0">Female</option>
+                </select>
+            </div>
+            <div class="formrow"><label for="ChestPainType">Chest Pain Type</label>
+                <select id="ChestPainType">
+                    <option value="0">Typical Angina</option>
+                    <option value="1">Atypical Angina</option>
+                    <option value="2">Non-anginal Pain</option>
+                    <option value="3">Asymptomatic</option>
+                </select>
+            </div>
+            <div class="formrow"><label for="RestingBP">Resting BP</label>
+                <input type="number" id="RestingBP" required>
+            </div>
+            <div class="formrow"><label for="Cholesterol">Cholesterol</label>
+                <input type="number" id="Cholesterol" required>
+            </div>
+            <div class="formrow"><label for="FastingBS">Fasting BS</label>
+                <select id="FastingBS">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+            <div class="formrow"><label for="RestingECG">Resting ECG</label>
+                <select id="RestingECG">
+                    <option value="0">Normal</option>
+                    <option value="1">ST</option>
+                    <option value="2">LVH</option>
+                </select>
+            </div>
+            <div class="formrow"><label for="MaxHR">Max HR</label>
+                <input type="number" id="MaxHR" required>
+            </div>
+            <div class="formrow"><label for="ExerciseAngina">Exercise Angina</label>
+                <select id="ExerciseAngina">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+            <div class="formrow"><label for="Oldpeak">Oldpeak</label>
+                <input type="number" step="0.1" id="Oldpeak" required>
+            </div>
+            <div class="formrow"><label for="ST_Slope">ST Slope</label>
+                <select id="ST_Slope">
+                    <option value="0">Up</option>
+                    <option value="1">Flat</option>
+                    <option value="2">Down</option>
+                </select>
+            </div>
+            <button type="submit">Predict Risk</button>
+        </form>
+        <div id="result"></div>
+    </div>
+<script>
+document.getElementById("predictForm").onsubmit = async function(e) {
+    e.preventDefault();
+    document.getElementById('result').innerHTML =
+        "<span style='color:#666;'>Predicting...</span>";
+    const data = {
+        "Age": Number(document.getElementById("Age").value),
+        "Sex": Number(document.getElementById("Sex").value),
+        "ChestPainType": Number(document.getElementById("ChestPainType").value),
+        "RestingBP": Number(document.getElementById("RestingBP").value),
+        "Cholesterol": Number(document.getElementById("Cholesterol").value),
+        "FastingBS": Number(document.getElementById("FastingBS").value),
+        "RestingECG": Number(document.getElementById("RestingECG").value),
+        "MaxHR": Number(document.getElementById("MaxHR").value),
+        "ExerciseAngina": Number(document.getElementById("ExerciseAngina").value),
+        "Oldpeak": Number(document.getElementById("Oldpeak").value),
+        "ST_Slope": Number(document.getElementById("ST_Slope").value)
+    };
+    try {
+        const response = await fetch("/predict", {
+            method: "POST",
+            headers: { "Content-Type": "application/json"},
+            body: JSON.stringify(data)
+        });
+        const res = await response.json();
+        if(res.error) {
+            document.getElementById('result').innerHTML =
+                "<span style='color:#d8000c;'>" + res.error + "</span>";
+        } else {
+            document.getElementById('result').innerHTML =
+                (res.prediction === 1
+                 ? "<span style='color:#f45b69;'><b>💔 " + res.result + "</b></span>"
+                 : "<span style='color:#329f60;'><b>💚 " + res.result + "</b></span>") +
+                (res.probability !== null
+                 ? "<br><span style='color:#222;'><b>Risk Probability:</b> "
+                        + (res.probability*100).toFixed(2)+"%</span>"
+                 : "");
+        }
+    } catch (e) {
+        document.getElementById('result').innerHTML =
+            "<span style='color:#d8000c;'>Error: " + e + "</span>";
+    }
+}
+</script>
+</body>
+</html>
